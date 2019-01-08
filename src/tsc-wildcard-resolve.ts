@@ -8,7 +8,10 @@ import {
     getJSFiles,
     IFileReplace,
     ITypescriptModule,
+<<<<<<< HEAD
     removeNotExistFolderInPath,
+=======
+>>>>>>> ed2b42c70bbf1985b0650b10bbd1c604b11e2671
     replaceInFile,
     rtrim,
     validateTsConfig
@@ -22,7 +25,14 @@ function getFileReplaceTask(
     const replaces: IFileReplace[] = [];
 
     for (const module of modules) {
+<<<<<<< HEAD
         const moduleDir = removeNotExistFolderInPath(outDir, module.path);
+=======
+        const moduleDir = path
+            .resolve(outDir, module.path)
+            .replace("out\\dist\\src", "out\\dist\\")
+            .replace("out/dist/src/", "out/dist/");
+>>>>>>> ed2b42c70bbf1985b0650b10bbd1c604b11e2671
         const moduleName = module.name.replace(/\/\*$/, "");
 
         let diff = path.relative(
