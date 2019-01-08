@@ -1,4 +1,5 @@
 import * as Bluebird from "bluebird";
+import { existsSync } from "fs";
 import * as path from "path";
 
 const gracefulFs = require("graceful-fs");
@@ -32,7 +33,10 @@ export function getJSFiles(dir: string, files: string[] = []) {
     return files;
 }
 
-export async function replaceInFile(filePath: string, replaces: IFileReplace[]) {
+export async function replaceInFile(
+    filePath: string,
+    replaces: IFileReplace[]
+) {
     let newSource = await fs.readFileAsync(filePath, "utf-8");
     for (const replace of replaces) {
         newSource = newSource.replace(replace.regExp, replace.text);
@@ -94,4 +98,14 @@ export function validateTsConfig(config: any) {
 
 export function endsWith(str: string, suffix: string) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+export function removeNotExistFolderInPath(
+    Outpath: string,
+    modulePath: string
+) {
+    while (!existsSync(path.resolve(Outpath, modulePath))) {
+        modulePath = modulePath.replace(/[^\/]+\//, "").replace(/[^\\]\\/, "");
+    }
+    return path.resolve(Outpath, modulePath);
 }

@@ -1,6 +1,5 @@
 import * as path from "path";
 const tsconfig = require("tsconfig");
-
 import {
     CONFIG_FILENAME,
     convertToUnixPath,
@@ -9,6 +8,7 @@ import {
     getJSFiles,
     IFileReplace,
     ITypescriptModule,
+    removeNotExistFolderInPath,
     replaceInFile,
     rtrim,
     validateTsConfig
@@ -22,10 +22,7 @@ function getFileReplaceTask(
     const replaces: IFileReplace[] = [];
 
     for (const module of modules) {
-        const moduleDir = path
-            .resolve(outDir, module.path)
-            .replace("out\\dist\\src", "out\\dist\\")
-            .replace("out/dist/src/", "out/dist/");
+        const moduleDir = removeNotExistFolderInPath(outDir, module.path);
         const moduleName = module.name.replace(/\/\*$/, "");
 
         let diff = path.relative(
